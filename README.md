@@ -40,4 +40,4 @@ Apache-2.0. See `LICENSE`.
 
 ## Related work
 
-This is the Go companion to [firecrest-agentic-workbench](https://github.com/VadaLinux76/firecrest-agentic-workbench). The workbench itself is intentionally not modified by this repository.
+This is the Go companion to [firecrest-agentic-workbench](https://github.com/VadaLinux/firecrest-agentic-workbench). The workbench itself is intentionally not modified by this repository.
