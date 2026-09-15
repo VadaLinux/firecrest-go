@@ -25,14 +25,31 @@ The CLI uses an existing bearer token, so it never puts a client secret on a com
 
 ```bash
 export FIRECREST_URL=https://firecrest.example FIRECREST_SYSTEM=my-system FIRECREST_TOKEN=…
-firecrest-go submit job.sh /home/me
+firecrest-go systems
+firecrest-go submit -name myjob -out myjob.out -err myjob.err job.sh /home/me
 firecrest-go status 12345
-firecrest-go download /home/me/output.txt ./output.txt
+firecrest-go download /home/me/myjob.out ./output.txt
 ```
+
+Pass `-out`/`-err` when you intend to read a job's output back. Without them the
+scheduler picks the default `slurm-<jobid>.out`, and whether that file really appears
+where the API reports it is up to the site's Slurm configuration — see the caveat below.
 
 ## Verification
 
-Tests use `httptest`, require no running FirecREST stack, and are checked with `go vet`, `staticcheck`, and `go test -race`. No real Alps credentials or systems are exercised by this repository.
+Unit tests use `httptest`, require no running FirecREST stack, and are checked with
+`go vet`, `staticcheck`, and `go test -race`.
+
+Beyond that, this client has been **run end to end against a real FirecREST v2 server**
+(`f7t-appversion: 2.6.0`) on the project's local demo stack, on 2026-09-15: OAuth2
+client-credentials token, `systems`, `submit`, `status` polled to `COMPLETED`, and
+`download` of the job's stdout all succeeded. What that run found is recorded in
+`docs/verification-v2.md`.
+
+**No real Alps system and no real CSCS credentials have been exercised.** The demo
+stack's scheduler is a shell stand-in, not Slurm, and its tokens are not representative
+of Keycloak's short-lived ones — so timing, token refresh under load, and real
+scheduler states remain unverified.
 
 ## License
 
